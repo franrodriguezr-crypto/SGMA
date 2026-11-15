@@ -2,9 +2,22 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from backend.database import obtener_conexion
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI(title="SGMA - Sistema de Gestión de Mantenimiento")
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173"
+    ],
+    allow_credentials=False,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
+)
 
 
 @app.get("/")
@@ -232,3 +245,32 @@ def listar_trabajos_pendientes():
             ]
 
     return trabajos
+
+
+@app.get("/api/tecnicos")
+def listar_tecnicos():
+
+    with obtener_conexion() as conexion:
+        with conexion.cursor() as cursor:
+
+            cursor.execute("""
+                SELECT
+                    id_usuario,
+                    nombre,
+                    correo
+                FROM usuarios
+                WHERE rol = 'Tecnico'
+                  AND estado = 'Activo'
+                ORDER BY nombre
+            """)
+
+            columnas = [columna.name for columna in cursor.description]
+            registros = cursor.fetchall()
+
+            tecnicos = [
+                dict(zip(columnas, registro))
+                for registro in registros
+            ]
+
+    return tecnicos
+
