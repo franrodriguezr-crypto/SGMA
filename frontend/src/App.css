@@ -207,3 +207,46 @@ button:disabled {
   color: #166534;
 }
 
+
+/* Menú de navegación del SGMA */
+
+.navegacion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 8%;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+}
+
+.navegacion button {
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.navegacion button:hover {
+  background: #dbe4eb;
+}
+
+.navegacion button.activo {
+  background: #0f9d83;
+  color: white;
+}
+
+.navegacion button.activo:hover {
+  background: #0b806b;
+}
+
+@media (max-width: 600px) {
+  .navegacion {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+}
